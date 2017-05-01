@@ -1,0 +1,6 @@
+{
+    "name": "kodo/csv",
+    "type": "library",
+    "license": "MIT",
+    "require": {}
+}
