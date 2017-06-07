@@ -1,6 +1,21 @@
 {
-    "name": "kodo/csv",
+    "name": "stefanoruth/csv",
     "type": "library",
     "license": "MIT",
-    "require": {}
+    "require": {
+        "league/csv": "^8.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.1"
+    },
+    "autoload": {
+    	"psr-4": {
+    		"Ruth\\Csv\\": "src/"
+    	}
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Ruth\\Csv\\Tests\\": "tests/"
+        }
+    }
 }
