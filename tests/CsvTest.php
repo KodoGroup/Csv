@@ -2,66 +2,52 @@
 
 namespace Ruth\Csv\Tests;
 
-use Ruth\Csv\Csv;
 use PHPUnit\Framework\TestCase;
+use Ruth\Csv\Csv;
+use Ruth\Csv\CsvReader;
 
 class CsvTest extends TestCase
 {
 	public function setUp()
 	{
-		$this->products =  [
-			(object) [
-				'title' => 'Demo 1',
-				'price' => 10,
-				'image' => 'image.jpg',
-			],
-
-			(object) [
-				'title' => 'Demo 2',
-				'price' => 20.2,
-				'meta'  => (object)[
-					'type' => 'color',
-					'value' => 'blue',
-				]
-			],
-		];
+		$this->file = __DIR__.'/files/foobar.csv';
 	}
 
-	// public function test_creates_an_empty_csv_file()
-	// {
-	// 	$result = Csv::build([],['title', 'price'])->toArray();
+	/**
+     * @expectedException \Ruth\Csv\FileNotFoundException
+     */
+    public function test_file_not_found()
+    {
+        CsvReader::new()->load(__DIR__.'/files/missing.csv');
+    }
 
-	// 	$this->assertEquals(1, count($result));
-	// 	$this->assertEquals(['title', 'price'], $result[0]);
-	// }
+    public function test_can_change_delimiter()
+    {
+    	$csv = CsvReader::new()->delimiter('Foo');
 
-	// public function test_export_simple_data()
-	// {
-	// 	$result = Csv::build($this->products , ['title', 'price', 'image'])->toArray();
+    	$this->assertEquals('Foo', $csv->options['delimiter']);
+    }
 
-	// 	$this->assertEquals(3, count($result));
-	// 	$this->assertEquals(['title', 'price', 'image'], $result[0]);
-	// 	$this->assertEquals(['Demo 1', 10, 'image.jpg'], $result[1]);
-	// 	$this->assertEquals(['Demo 2', 20.2, null], $result[2]);
-	// }
+    public function test_can_change_row_type_to_assoc()
+    {
+    	$csv = CsvReader::new()->load($this->file)->asAssoc();
 
-	// public function test_use_of_a_callback_formatter()
-	// {
-	// 	$result = Csv::build($this->products , ['sku' => function($item){
-	// 		return strtolower(str_replace(' ', '-', $item->title));
-	// 	}])->toArray();
+    	$this->assertTrue($csv->options['asAssoc']);
+    }
 
-	// 	$this->assertEquals(['sku'], $result[0]);
-	// 	$this->assertEquals(['demo-1'], $result[1]);
-	// 	$this->assertEquals(['demo-2'], $result[2]);
-	// }
+    public function test_can_change_row_type_to_objects()
+    {
+    	$csv = CsvReader::new()->load($this->file)->asObjects();
 
-	public function test_use_of_dot_notation()
-	{
-		$result = Csv::build($this->products, ['meta.value'])->toArray();
-		// var_dump($result);
-		$this->assertEquals(['meta.value'], $result[0]);
-		$this->assertEquals([null], $result[1]);
-		$this->assertEquals(['blue'], $result[2]);
-	}
+    	$this->assertTrue($csv->options['asObjects']);
+    	$this->assertTrue(is_object($csv->get()[0]));
+    }
+
+    public function test_can_trim_rows()
+    {
+    	$csv = CsvReader::new()->load($this->file);
+
+    	$this->assertTrue($csv->options['trimStrings']);
+    	$this->assertEquals('I got spaces', $csv->get()[3][1])
+    }
 }

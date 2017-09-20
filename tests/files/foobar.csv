@@ -1,0 +1,5 @@
+Sku;Name;Size;Price
+DR10;"Red Dress";10;14.99
+DB14;"Blue Dress";14;14.99
+SS;"Foo Shoe";small;40
+EMP;" I got spaces ";" ";""

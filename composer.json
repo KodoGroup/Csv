@@ -2,12 +2,6 @@
     "name": "stefanoruth/csv",
     "type": "library",
     "license": "MIT",
-    "require": {
-        "league/csv": "^8.2"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^6.1"
-    },
     "autoload": {
     	"psr-4": {
     		"Ruth\\Csv\\": "src/"
@@ -17,5 +11,8 @@
         "psr-4": {
             "Ruth\\Csv\\Tests\\": "tests/"
         }
+    },
+    "require": {
+        "phpunit/phpunit": "^6.3"
     }
 }
